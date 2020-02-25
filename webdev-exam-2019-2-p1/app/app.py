@@ -11,7 +11,7 @@ application = app
 app.config.from_pyfile('config.py') # Берем конфиг для DB из файла
 mysql = MySQL(app) # Инициализируем объект класса DB
 
-import auth # Импортив модуль авторизации
+import auth # Импорт в модуль авторизации
 
 @app.route('/')
 def hello_world():
@@ -60,7 +60,7 @@ def create():
         return render_template('new.html', users=load_users(), status=load_status(), data=data)
         
 
-    query = '''insert into technical_supp (name, author, year, count)
+    query = '''insert into ReE_main (name, author, year, count)
     values (%s, %s, %s, %s);
     '''
     values = (name, author, year, count)
@@ -142,7 +142,7 @@ def delete(id):
     if not flask_login.current_user.can('delete'):
         flash("У вас недостаточно прав для выполнения данного действия!", 'danger')
         return redirect(url_for("hello_world"))
-    query = 'Delete from ReE_main where id = %s'
+    query = "Delete from ReE_main where id = %s"
     cursor = mysql.connection().cursor(named_tuple=True)
     cursor.execute(query, (id,))
     mysql.connection().commit()
