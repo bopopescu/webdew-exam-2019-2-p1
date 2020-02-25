@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<h2> Экзамен 2020 </h2>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="col-md-8 my-4 border border-white rounded" id="main">
+    <div class="container text-center">
+
+<h5 class="card-title">Главная страница</h5>
+<table class="table table-sm table-bordered table-hover text-center">
+    <thead>
+        <tr>
+            <td> № </td>
+            <td> date </td>
+            <td> book </td>
+            <td> status </td>
+            <td> type </td>
+            <td> FIO </td>
+            <td> actions </td>
+        </tr>
+        </head>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td class="align-middle"> {{ loop.index }}</td>
+            <td class="align-middle"> {{ user.дата }}</td>
+            <td class="align-middle"> {{ user.book }}</td>
+            <td class="align-middle"> {{ user.status }}</td>
+            <td class="align-middle"> {{ user.type }}</td>
+            <td class="align-middle"> {{ user.FIO }}</td>
+            <td>
+                
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Действия
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% if current_user.is_authenticated %}
+                        {% if current_user.can('edit', record=user) %}
+                        <a class=" btn btn-block btn-info" href="{{ url_for('edit', id=user.id) }}"> Редактировать </a>
+                        {% endif %}
+                        {% if current_user.can('delete') %}
+                        <a type="button" class="btn btn-block btn-danger text-white" onclick="del(this);"
+                            name="{{ url_for('delete', id=user.id) }}">Удалить</a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+               
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a class="btn btn-info" href="{{ url_for('new') }}"> Добавить обращение </a>
+
+    </div>
+</div>
+{% endblock %}
